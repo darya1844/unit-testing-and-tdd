@@ -4,6 +4,8 @@ import com.acme.banking.dbo.domain.Client;
 import com.acme.banking.dbo.domain.SavingAccount;
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SavingAccountTest {
@@ -17,10 +19,10 @@ public class SavingAccountTest {
         final Client client = new Client(clientId, clientName);
         final double amount = 110;
         SavingAccount sut = new SavingAccount(id, client, amount);
-        assertAll("SavingAccount store its properties",
-                () -> assertEquals(id, sut.getId()),
-                () -> assertEquals(client, sut.getClient()),
-                () -> assertEquals(amount, sut.getAmount()));
+        assertThat(sut, allOf(
+                hasProperty("id", is(sut.getId())),
+                hasProperty("client", is(sut.getClient())),
+                hasProperty("amount", is(sut.getAmount()))));
     }
 
     @Test
@@ -45,5 +47,14 @@ public class SavingAccountTest {
         final Client client = new Client(clientId, clientName);
         final double amount = -110;
         assertThrows(IllegalArgumentException.class, () -> new SavingAccount(id, client, amount));
+    }
+
+    @Test
+    public void shouldStoreClientWhenCreated() {
+        final int id = 1;
+        final Client client = new Client(clientId, clientName);
+        final double amount = 110;
+        SavingAccount sut = new SavingAccount(id, client, amount);
+        assertThat(sut.getClient(), is(client));
     }
 }

@@ -21,9 +21,9 @@ public class ClientTest {
         final int clientId = 1;
         final String clientName = "dummy client name";
         Client sut = new Client(clientId, clientName);
-        assertAll("Client store its properties",
-                () -> assertEquals(clientId, sut.getId()),
-                () -> assertEquals(clientName, sut.getName()));
+        assertThat(sut, allOf(
+                hasProperty("id", is(sut.getId())),
+                hasProperty("name", is(sut.getName()))));
     }
 
     @Test
