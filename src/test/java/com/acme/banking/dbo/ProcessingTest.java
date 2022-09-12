@@ -71,10 +71,15 @@ public class ProcessingTest {
     public void shouldSaveTransaction() {
         int accountIdTo = 1;
         int accountIdFrom = 2;
+        double amountToTransfer = 1.;
         when(accountRepostory.findById(accountIdTo)).thenReturn(accountTo);
         when(accountRepostory.findById(accountIdFrom)).thenReturn(accountFrom);
         when(accountFrom.getAmount()).thenReturn(1.);
         when(accountTo.getAmount()).thenReturn(2.);
-        verify(accountFrom).setAmount(3.);
+        sut.transfer(accountIdFrom, accountIdTo, amountToTransfer);
+        verify(accountFrom).setAmount(0);
+        verify(accountTo).setAmount(3.);
+        verify(accountRepostory).save(accountFrom);
+        verify(accountRepostory).save(accountTo);
     }
 }
