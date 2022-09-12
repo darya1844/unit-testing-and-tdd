@@ -15,10 +15,10 @@ public class SavingAccountTest {
 
     @Test
     public void shouldStorePropertiesWhenCreated() {
-        final int id = 1;
+        final int accountId = 1;
         final Client client = new Client(clientId, clientName);
-        final double amount = 110;
-        SavingAccount sut = new SavingAccount(id, client, amount);
+        final double amount = 1;
+        SavingAccount sut = new SavingAccount(accountId, client, amount);
         assertThat(sut, allOf(
                 hasProperty("id", is(sut.getId())),
                 hasProperty("client", is(sut.getClient())),
@@ -27,34 +27,38 @@ public class SavingAccountTest {
 
     @Test
     public void shouldNotStorePropertiesWhenCreatedWithNullId() {
-        final int id = 0;
+        final int accountId = 0;
         final Client client = new Client(clientId, clientName);
-        final double amount = 110;
-        assertThrows(IllegalArgumentException.class, () -> new SavingAccount(id, client, amount));
+        final double amount = 1;
+        assertThrows(IllegalArgumentException.class,
+                () -> new SavingAccount(accountId, client, amount));
     }
 
     @Test
     public void shouldNotStorePropertiesWhenCreatedWithNullClient() {
-        final int id = 1;
+        final int accountId = 1;
         final Client client = null;
-        final double amount = 110;
-        assertThrows(IllegalArgumentException.class, () -> new SavingAccount(id, client, amount));
+        final double amount = 1;
+        assertThrows(IllegalArgumentException.class,
+                () -> new SavingAccount(accountId, client, amount));
     }
 
     @Test
     public void shouldNotStorePropertiesWhenCreatedWithNullAmount() {
-        final int id = 1;
+        final int accountId = 1;
         final Client client = new Client(clientId, clientName);
-        final double amount = -110;
-        assertThrows(IllegalArgumentException.class, () -> new SavingAccount(id, client, amount));
+        final double amount = -1;
+        assertThrows(IllegalArgumentException.class,
+                () -> new SavingAccount(accountId, client, amount));
     }
 
     @Test
-    public void shouldStoreClientWhenCreated() {
-        final int id = 1;
+    public void shouldStoreClientWhenCreated() { //consistency
+        final int accountId = 1;
         final Client client = new Client(clientId, clientName);
         final double amount = 110;
-        SavingAccount sut = new SavingAccount(id, client, amount);
+        SavingAccount sut = new SavingAccount(accountId, client, amount);
         assertThat(sut.getClient(), is(client));
+        //проверить у клиента счет
     }
 }
