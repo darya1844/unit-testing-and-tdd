@@ -9,17 +9,21 @@ import com.acme.banking.dbo.persist.ClientRepository;
 import java.util.Collection;
 
 public class Processing {
-    private ClientRepository clientRepository;
-    private AccountRepostory accountRepostory;
+    private final ClientRepository clientRepository;
+    private final AccountRepostory accountRepostory;
 
     private final Cash cash;
 
-    public Processing(Cash cash) {
+    public Processing(ClientRepository clientRepository, AccountRepostory accountRepostory, Cash cash) {
+        this.clientRepository = clientRepository;
+        this.accountRepostory = accountRepostory;
         this.cash = cash;
     }
 
-    public Client createClient(String name) {
-        return null; //TODO
+    public Client createClient(int id, String name) {
+        Client client = new Client(id, name);
+        clientRepository.save(client);
+        return client;
     }
 
     public Collection<Account> getAccountsByClientId(int clientId) {
@@ -32,7 +36,7 @@ public class Processing {
         Account to = accountRepostory.findById(toAccountId);
 
         from.setAmount(from.getAmount() - amount);
-        from.setAmount(to.getAmount() + amount);
+        to.setAmount(to.getAmount() + amount);
 
         accountRepostory.save(from);
         accountRepostory.save(to);
