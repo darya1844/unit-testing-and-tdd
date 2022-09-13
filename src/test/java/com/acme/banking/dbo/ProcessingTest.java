@@ -48,7 +48,7 @@ public class ProcessingTest {
     }
 
     @Test
-    public void shouldCallCashMethod() {
+    public void shouldLogTransactionWhenCash() {
         sut.cash(1.0, 1);
 
         verify(cash, times(1)).log(1.0, 1);
@@ -58,22 +58,23 @@ public class ProcessingTest {
     public void shouldCreateClient() {
         sut.createClient(clientId, clientName);
         verify(clientRepository).save(any(Client.class));
+        //TODO нужна проверка правильности клиента, Captor
     }
 
     @Test
     public void shouldReturnAccountByClient() {
         when(clientRepository.findById(clientId)).thenReturn(client);
-        when(client.getAccounts()).thenReturn(asList(accountTo));
-        assertThat(sut.getAccountsByClientId(clientId), allOf(hasItem(is(accountTo))));
+        when(client.getAccounts()).thenReturn(asList(accountTo)); //TODO можно схлопнуть в одну строчку
+        assertThat(sut.getAccountsByClientId(clientId), hasItem(is(accountTo)));
     }
 
     @Test
     public void shouldSaveTransaction() {
-        int accountIdTo = 1;
-        int accountIdFrom = 2;
+        final int accountIdTo = 1;
+        final int accountIdFrom = 2;
         double amountToTransfer = 1.;
         when(accountRepostory.findById(accountIdTo)).thenReturn(accountTo);
-        when(accountRepostory.findById(accountIdFrom)).thenReturn(accountFrom);
+        when(accountRepostory.findById(accountIdFrom)).thenReturn(accountFrom); //TODO также можно схлопнуть
         when(accountFrom.getAmount()).thenReturn(1.);
         when(accountTo.getAmount()).thenReturn(2.);
         sut.transfer(accountIdFrom, accountIdTo, amountToTransfer);
