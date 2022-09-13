@@ -24,9 +24,9 @@ public class Reporting {
         builder.append("Bank\n")
                 .append("========\n")
                 .append("Branch # 1\n")
-                .append("------\n");
+                .append("------");
         for (Account account : rootBranch.getAccounts()) {
-            builder.append("Client # ")
+            builder.append("\nClient # ")
                     .append(account.getClient().getId())
                     .append("\n### Account # ")
                     .append(account.getId()).append(": ").append(account.getAmount());
